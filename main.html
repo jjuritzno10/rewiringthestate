@@ -119,8 +119,28 @@ h1 em { font-style: italic; }
 }
 .card[data-unit="justice"]::before { background: rgba(245,245,245,0.40); }
 .card[data-unit="iai"]::before     { background: rgba(245,245,245,0.22); }
-.card[data-unit="10ds"]::before    { background: rgba(245,245,245,0.12); }
-.card[data-unit="10if"]::before    { background: rgba(245,245,245,0.06); }
+.card[data-unit="10if"]::before    { background: rgba(245,245,245,0.12); }
+.card[data-unit="pm"]::before      { background: rgba(245,245,245,0.06); }
+.card[data-unit="police"]::before  { background: rgba(245,245,245,0.06); }
+.card[data-unit="aisi"]::before    { background: rgba(245,245,245,0.06); }
+
+.card-soon .role-title { color: var(--mid); }
+.card-soon .team-desc  { color: rgba(245,245,245,0.20); }
+
+.ghost-btn-soon {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: clamp(0.5rem,0.85vw,0.6rem);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(245,245,245,0.22);
+  border: 1px dashed var(--b1);
+  padding: 0.5em 1em;
+  background: transparent;
+}
 
 .role-title {
   font-family: var(--serif);
@@ -213,6 +233,12 @@ footer {
 
   <main class="roles-grid" id="grid"></main>
 
+  <div class="section-row">
+    <span class="section-label">Coming Soon</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <main class="roles-grid" id="upcoming"></main>
 
 </div>
 <script>
@@ -261,12 +287,38 @@ const ROLES = [
   }
 ];
 
+const UPCOMING = [
+  {
+    team: "PM's Office",
+    unit: "pm",
+    desc: "Technical talent embedded at the centre — building tools for the Prime Minister's priorities."
+  },
+  {
+    team: "Police AI Lab",
+    unit: "police",
+    desc: "Building and deploying AI across UK policing — from frontline tools to force-wide platforms."
+  },
+  {
+    team: "AISI",
+    unit: "aisi",
+    desc: "The AI Safety Institute — evaluating frontier models and advancing the science of safe AI."
+  }
+];
+
 document.getElementById('grid').innerHTML = ROLES.map(r => `
   <div class="card" data-unit="${r.unit}">
     <p class="role-title">${r.role}</p>
     <p class="team-name">${r.team}</p>
     <p class="team-desc">${r.desc}</p>
     <a class="ghost-btn" href="${r.url}" target="_blank" rel="noopener">Apply &rarr;</a>
+  </div>
+`).join('');
+
+document.getElementById('upcoming').innerHTML = UPCOMING.map(r => `
+  <div class="card card-soon" data-unit="${r.unit}">
+    <p class="role-title">${r.team}</p>
+    <p class="team-desc">${r.desc}</p>
+    <span class="ghost-btn-soon">Coming soon</span>
   </div>
 `).join('');
 </script>
