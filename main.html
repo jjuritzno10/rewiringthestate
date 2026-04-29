@@ -202,7 +202,7 @@ footer {
 
   <header class="hero">
     
-    <h1>Rewiring<br><em>the State</em><br>one role at a time</h1>
+    <h1>Rewiring<br><em>the State</em></h1>
     
   </header>
 
@@ -218,76 +218,46 @@ footer {
 <script>
 const ROLES = [
   {
-    role: "AI Engineer",
+    role: "Forward Deployed Engineer",
     unit: "justice",
     team: "Justice AI",
-    desc: "Embedding responsible AI across courts, prisons and probation — from scan to scale."
+    url: "https://ai.justice.gov.uk/careers",
+    desc: "Ship code in the field. Work shoulder-to-shoulder with users in prisons, courts and probation — building from conversation, not spec."
   },
   {
-    role: "Product Manager",
+    role: "Platform Engineer",
     unit: "justice",
     team: "Justice AI",
-    desc: "Delivering tools that help 90,000 justice staff work smarter and serve the public faster."
+    url: "https://ai.justice.gov.uk/careers",
+    desc: "Design and maintain the secure, reliable systems that power AI at scale — pipelines, MLOps, cloud and observability."
   },
   {
-    role: "Researcher",
+    role: "AI Product Manager",
     unit: "justice",
     team: "Justice AI",
-    desc: "Co-designing AI solutions with users — victims, offenders, staff and judges."
+    url: "https://ai.justice.gov.uk/careers",
+    desc: "Translate user needs and system challenges into AI products that are usable, ethical and impactful across the justice system."
   },
   {
     role: "Applied AI Engineer",
     unit: "iai",
     team: "i.AI",
+    url: "https://ai.gov.uk/opportunities/",
     desc: "Rapidly designing, testing and deploying AI products that cut across the whole of government."
   },
   {
-    role: "Data Scientist",
+    role: "Head of Applied AI",
     unit: "iai",
     team: "i.AI",
-    desc: "Turning public-sector data into tools that genuinely improve life for citizens."
+    url: "https://ai.gov.uk/opportunities/",
+    desc: "Lead the engineers shipping frontier AI into government — set the technical bar and the products that follow."
   },
   {
-    role: "Policy Technologist",
-    unit: "iai",
-    team: "i.AI",
-    desc: "Bridging ministerial priorities and frontier AI — scanning, incubating and scaling."
-  },
-  {
-    role: "Data Scientist",
-    unit: "10ds",
-    team: "No10 Data Science",
-    desc: "Informing decisions that reach the Prime Minister using cutting-edge evidence and analysis."
-  },
-  {
-    role: "ML Engineer",
-    unit: "10ds",
-    team: "No10 Data Science",
-    desc: "Building the analytical infrastructure at the heart of government decision-making."
-  },
-  {
-    role: "Research Analyst",
-    unit: "10ds",
-    team: "No10 Data Science",
-    desc: "Tracking delivery of government priority programmes — data that drives policy change."
-  },
-  {
-    role: "Innovation Fellow",
+    role: "Fellow",
     unit: "10if",
-    team: "No10 Innovation",
+    team: "No10 Fellowship",
+    url: "https://fellows.ai.gov.uk/",
     desc: "A high-impact tour of duty deploying world-class technical talent on PM-priority problems."
-  },
-  {
-    role: "Software Engineer",
-    unit: "10if",
-    team: "No10 Innovation",
-    desc: "Solving national challenges with direct access to senior decision-makers and real data."
-  },
-  {
-    role: "Product Lead",
-    unit: "10if",
-    team: "No10 Innovation",
-    desc: "Designing services only government can build, at a scale only government can reach."
   }
 ];
 
@@ -296,7 +266,7 @@ document.getElementById('grid').innerHTML = ROLES.map(r => `
     <p class="role-title">${r.role}</p>
     <p class="team-name">${r.team}</p>
     <p class="team-desc">${r.desc}</p>
-    <a class="ghost-btn" href="#">Apply &rarr;</a>
+    <a class="ghost-btn" href="${r.url}" target="_blank" rel="noopener">Apply &rarr;</a>
   </div>
 `).join('');
 </script>
