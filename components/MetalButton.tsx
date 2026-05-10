@@ -137,36 +137,21 @@ export function MetalButton({
       href={href}
       onPointerEnter={startScramble}
       onFocus={startScramble}
-      className={`group relative inline-flex items-stretch bg-ink text-paper overflow-hidden shadow-[0_2px_18px_-8px_rgba(0,0,0,0.7)] hover:shadow-[0_12px_42px_-12px_hsl(var(--accent)/0.7)] transition-shadow duration-300 ${className}`}
+      className={`group relative inline-flex items-center bg-ink text-paper px-7 sm:px-9 py-3 sm:py-3.5 ${className}`}
     >
-      {/* Scan-line — accent stripe sweeps across the brick on hover */}
+      {/* Bottom accent stripe draws in on hover/focus */}
       <span
         aria-hidden
-        className="absolute inset-y-0 left-0 w-[3px] bg-accent -translate-x-3 opacity-0 group-hover:translate-x-[60vw] group-hover:opacity-100 transition-[transform,opacity] duration-[800ms] ease-out"
+        className="absolute inset-x-0 bottom-0 h-[2px] bg-accent origin-left scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-[400ms] ease-[cubic-bezier(0.65,0,0.35,1)]"
       />
-
-      {/* Label cell */}
-      <span className="flex items-center py-5 sm:py-6 pl-7 sm:pl-10 pr-6 sm:pr-8">
-        <span
-          ref={labelRef}
-          className="font-display font-bold uppercase text-base sm:text-[1.1rem] tracking-[0.22em] whitespace-nowrap"
-          style={{ fontVariantNumeric: "tabular-nums" }}
-        >
+      <span
+        className="relative inline-block font-display font-semibold uppercase text-[0.82rem] sm:text-sm tracking-[0.22em] whitespace-nowrap"
+        style={{ fontVariantNumeric: "tabular-nums" }}
+      >
+        {/* Ghost reserves width so the brick never jitters during scramble */}
+        <span aria-hidden className="invisible">{children}</span>
+        <span ref={labelRef} className="absolute inset-0">
           {children}
-        </span>
-      </span>
-
-      {/* Divider + arrow cell */}
-      <span
-        aria-hidden
-        className="self-stretch w-px bg-accent/30"
-      />
-      <span className="flex items-center py-5 sm:py-6 px-6 sm:px-7 bg-ink relative">
-        <span
-          aria-hidden
-          className="text-accent text-2xl sm:text-[1.75rem] leading-none group-hover:translate-x-1.5 transition-transform duration-300"
-        >
-          →
         </span>
       </span>
     </Link>

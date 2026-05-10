@@ -32,7 +32,7 @@ function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-center kenburns"
         />
         {/* Dim only where the title sits — let the image breathe */}
         <div className="absolute inset-0 bg-gradient-to-tr from-black/85 via-black/40 to-black/10" />
