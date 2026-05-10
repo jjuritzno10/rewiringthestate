@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Palette ----------
+ * Light = paper. Dark = pure black.
+ * Single accent: HM passport blue.
+ */
+:root,
+:root.light {
+  --paper: 40 14% 93%;
+  --paper-2: 40 10% 88%;
+  --ink: 0 0% 8%;
+  --faded: 0 0% 42%;
+  --line: 0 0% 80%;
+  /* GOV.UK blue — #1d70b8 */
+  --accent: 208 73% 42%;
+}
+
+:root.dark,
+.force-dark {
+  --paper: 0 0% 0%;
+  --paper-2: 0 0% 7%;
+  --ink: 0 0% 96%;
+  --faded: 0 0% 58%;
+  --line: 0 0% 18%;
+  /* GOV.UK blue, slightly lifted for legibility on pure black */
+  --accent: 208 73% 56%;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: hsl(var(--paper));
+  color: hsl(var(--ink));
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Convenience tokens used by Tailwind config */
+.bg-paper { background-color: hsl(var(--paper)); }
+.bg-paper-2 { background-color: hsl(var(--paper-2)); }
+.text-ink { color: hsl(var(--ink)); }
+.text-faded { color: hsl(var(--faded)); }
+.text-accent { color: hsl(var(--accent)); }
+.bg-accent { background-color: hsl(var(--accent)); }
+.bg-ink { background-color: hsl(var(--ink)); }
+.border-line { border-color: hsl(var(--line)); }
+.border-ink { border-color: hsl(var(--ink)); }
+.border-accent { border-color: hsl(var(--accent)); }
+
+/* Mono utility for tabular data */
+.mono { font-family: var(--font-mono), ui-monospace, monospace; }
+
+/* Uppercase Sequel Sans label */
+.tag {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  font-size: 0.72rem;
+}
+.tag-sm { font-size: 0.66rem; letter-spacing: 0.16em; font-weight: 500; }
+
+/* Crest — invert in dark mode so it reads on dark paper */
+.crest { filter: none; }
+:root.dark .crest { filter: invert(1); }
+
+/* Hairlines */
+.rule-thin {
+  height: 1px;
+  background: hsl(var(--ink) / 0.18);
+  width: 100%;
+}
+:root.dark .rule-thin { background: hsl(var(--ink) / 0.16); }
+
+/* Animated rule that draws on hover */
+.draw-rule {
+  position: relative;
+}
+.draw-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 0;
+  background: hsl(var(--accent));
+  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.draw-rule:hover::after { width: 100%; }
+
+/* Checkbox — boxed accent tick */
+input[type="checkbox"].rts-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid hsl(var(--ink) / 0.55);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  display: inline-block;
+  border-radius: 0;
+}
+input[type="checkbox"].rts-check:checked {
+  background: hsl(var(--accent));
+  border-color: hsl(var(--accent));
+}
+input[type="checkbox"].rts-check:checked::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: hsl(var(--paper));
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+::selection { background: hsl(var(--accent)); color: hsl(var(--paper)); }
+
+/* Reveal animations — staggered, slow */
+@keyframes settle {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes typebar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.settle { opacity: 0; animation: settle 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.typebar { transform-origin: left; transform: scaleX(0); animation: typebar 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+
+/* Anchor offset for sticky header */
+:where(section[id]) { scroll-margin-top: 4rem; }
+
+/* Minimal scrollbar */
+.minimal-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.minimal-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.minimal-scrollbar::-webkit-scrollbar-thumb { background: hsl(var(--ink) / 0.2); }
