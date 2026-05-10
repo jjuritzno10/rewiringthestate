@@ -6,9 +6,8 @@ import { useCallback, useRef } from "react";
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$@%&*+=/\\<>|";
 const SCRAMBLE_MS = 700;
 
-/** Decrypts text on hover. Each character cycles random caps/digits/symbols
- * before locking left-to-right, accompanied by glitchy bursts that resolve
- * into a single sharp click — CIA-terminal feel. */
+/** Solid command button — white brick with ink label and accent arrow.
+ * Decrypts text on hover with synthesized chirps + lock-in click. */
 export function MetalButton({
   href,
   children,
@@ -41,7 +40,6 @@ export function MetalButton({
     return ctxRef.current;
   };
 
-  /** Short noise burst with bandpass + decay. */
   const scheduleClick = (
     ctx: AudioContext,
     when: number,
@@ -60,36 +58,29 @@ export function MetalButton({
     }
     const noise = ctx.createBufferSource();
     noise.buffer = buf;
-
     const bp = ctx.createBiquadFilter();
     bp.type = "bandpass";
     bp.frequency.value = centreHz;
     bp.Q.value = 10;
-
     const g = ctx.createGain();
     g.gain.setValueAtTime(gain, when);
     g.gain.exponentialRampToValueAtTime(0.00001, when + length);
-
     noise.connect(bp).connect(g).connect(ctx.destination);
     noise.start(when);
     noise.stop(when + length);
   };
 
-  /** Sharp resonant ping for the lock-in moment. */
   const schedulePing = (ctx: AudioContext, when: number) => {
     const osc = ctx.createOscillator();
     osc.type = "triangle";
     osc.frequency.setValueAtTime(2400, when);
     osc.frequency.exponentialRampToValueAtTime(700, when + 0.05);
-
     const g = ctx.createGain();
     g.gain.setValueAtTime(0.09, when);
     g.gain.exponentialRampToValueAtTime(0.00001, when + 0.07);
-
     osc.connect(g).connect(ctx.destination);
     osc.start(when);
     osc.stop(when + 0.08);
-
     scheduleClick(ctx, when, 0.06, 0.15, 3600);
   };
 
@@ -98,8 +89,6 @@ export function MetalButton({
     if (!ctx) return;
     const start = ctx.currentTime;
     const dur = durMs / 1000;
-
-    // Granular chirps throughout the scramble — random pitch, random spacing
     let t = 0;
     while (t < dur - 0.04) {
       const len = 0.012 + Math.random() * 0.025;
@@ -108,22 +97,18 @@ export function MetalButton({
       scheduleClick(ctx, start + t, len, gain, freq);
       t += 0.022 + Math.random() * 0.04;
     }
-
-    // Resolve: a heavier click on lock-in
     schedulePing(ctx, start + dur);
   }, []);
 
   const startScramble = useCallback(() => {
-    if (rafRef.current !== undefined) return; // already animating
+    if (rafRef.current !== undefined) return;
     const target = children;
     if (!labelRef.current || !target) return;
-
     const startTime = performance.now();
     const tick = (now: number) => {
       const elapsed = now - startTime;
       const t = Math.min(1, elapsed / SCRAMBLE_MS);
       const len = target.length;
-      // Lock progresses left-to-right with slight ease
       const eased = 1 - Math.pow(1 - t, 1.8);
       const locked = Math.floor(eased * len);
       let out = "";
@@ -152,30 +137,37 @@ export function MetalButton({
       href={href}
       onPointerEnter={startScramble}
       onFocus={startScramble}
-      className={`group relative inline-flex items-center gap-3 px-6 py-3.5 overflow-hidden border border-ink text-ink hover:border-accent transition-colors duration-200 ${className}`}
+      className={`group relative inline-flex items-stretch bg-ink text-paper overflow-hidden shadow-[0_2px_18px_-8px_rgba(0,0,0,0.7)] hover:shadow-[0_12px_42px_-12px_hsl(var(--accent)/0.7)] transition-shadow duration-300 ${className}`}
     >
-      {/* Soft accent wash on hover */}
+      {/* Scan-line — accent stripe sweeps across the brick on hover */}
       <span
         aria-hidden
-        className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors duration-300"
+        className="absolute inset-y-0 left-0 w-[3px] bg-accent -translate-x-3 opacity-0 group-hover:translate-x-[60vw] group-hover:opacity-100 transition-[transform,opacity] duration-[800ms] ease-out"
       />
-      {/* Scan-line sweep */}
-      <span
-        aria-hidden
-        className="absolute inset-y-0 left-0 w-px bg-accent -translate-x-2 opacity-0 group-hover:translate-x-[400%] group-hover:opacity-100 transition-all duration-[600ms] ease-out"
-      />
-      <span
-        ref={labelRef}
-        className="relative tag text-[0.78rem] tracking-[0.18em] whitespace-nowrap group-hover:text-accent transition-colors"
-        style={{ fontVariantNumeric: "tabular-nums" }}
-      >
-        {children}
+
+      {/* Label cell */}
+      <span className="flex items-center py-5 sm:py-6 pl-7 sm:pl-10 pr-6 sm:pr-8">
+        <span
+          ref={labelRef}
+          className="font-display font-bold uppercase text-base sm:text-[1.1rem] tracking-[0.22em] whitespace-nowrap"
+          style={{ fontVariantNumeric: "tabular-nums" }}
+        >
+          {children}
+        </span>
       </span>
+
+      {/* Divider + arrow cell */}
       <span
         aria-hidden
-        className="relative tag text-[0.78rem] group-hover:translate-x-1 group-hover:text-accent transition-all"
-      >
-        →
+        className="self-stretch w-px bg-accent/30"
+      />
+      <span className="flex items-center py-5 sm:py-6 px-6 sm:px-7 bg-ink relative">
+        <span
+          aria-hidden
+          className="text-accent text-2xl sm:text-[1.75rem] leading-none group-hover:translate-x-1.5 transition-transform duration-300"
+        >
+          →
+        </span>
       </span>
     </Link>
   );

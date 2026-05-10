@@ -108,7 +108,7 @@ function Hero() {
                 className="mt-8 sm:mt-10 flex flex-wrap items-center gap-3 settle"
                 style={{ animationDelay: "0.9s" }}
               >
-                <MetalButton href="/jobs">See open roles</MetalButton>
+                <MetalButton href="/jobs">Apply</MetalButton>
               </div>
             </div>
           </div>
