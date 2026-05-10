@@ -307,10 +307,10 @@ function Contact() {
               <span className="text-accent">Send their work, not their CV.</span>
             </p>
             <a
-              href="mailto:hello@rewirethestate.gov.uk"
+              href="mailto:hello@rewirethestate.com"
               className="font-display font-medium text-xl sm:text-2xl mt-8 inline-block text-accent draw-rule"
             >
-              hello@rewirethestate.gov.uk
+              hello@rewirethestate.com
             </a>
           </div>
         </div>
